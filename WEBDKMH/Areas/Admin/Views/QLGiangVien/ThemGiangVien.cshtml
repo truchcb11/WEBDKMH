@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "QLGiangVien";
+    Layout = "~/Areas/Admin/Views/Shared/Index.cshtml";
+}
+
+@model WEBDKMH.Areas.Admin.Model.LecViewModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ThemGiangVien</title>
+    <style>
+        .form-container {
+            width: 50%; /* Độ rộng của form */
+            margin: auto; /* Căn giữa form */
+            padding: 50px 10px 50px 140px; /* Khoảng cách giữa lề và nội dung trong form */
+            border: 1px solid #ccc; /* Đường viền của form */
+            border-radius: 10px; /* Bo tròn viền của form */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Thêm Giảng Viên Mới</h2>
+
+        @using (Html.BeginForm("ThemGiangVien", "QLGiangVien", FormMethod.Post))
+        {
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email)
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Email)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Fullname)
+                @Html.TextBoxFor(model => model.Fullname, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Fullname)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address)
+                @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Address)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Phone)
+                @Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Phone)
+            </div>
+
+            <button type="submit" class="btn btn-primary">Thêm Giảng Viên</button>
+        }
+    </div>
+</body>
+</html>

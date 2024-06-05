@@ -1,0 +1,123 @@
+﻿
+@{
+    ViewBag.Title = "SuaMonHoc";
+    Layout = "~/Areas/Admin/Views/Shared/Index.cshtml";
+}
+
+@model WEBDKMH.Areas.Admin.Model.SubViewModel
+
+<h2>@ViewBag.Title</h2>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sửa Môn Học</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-4">Sửa Môn Học</h2>
+
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.ErrorMessage
+            </div>
+        }
+
+        @using (Html.BeginForm("SuaMonHoc", "QLMonHoc", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Masubhect, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Masubhect, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Masubhect, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SubjectTitle, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.SubjectTitle, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SubjectTitle, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Describe, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Describe, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Describe, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DKtienquyet, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.DKtienquyet, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DKtienquyet, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Images, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <input type="text" id="imageUrl" class="form-control" value="@Model.Images" readonly>
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button" id="chooseImageButton">Chọn ảnh</button>
+                    </span>
+                </div>
+                <input type="file" id="hinhanh" name="hinhanh" style="display: none;" accept="image/*" />
+                @if (!string.IsNullOrEmpty(Model.Images))
+                {
+                    <img src="@Model.Images" alt="Hình ảnh" class="mt-2" style="max-width: 200px;" />
+                }
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IDcate, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.IDcate, ViewBag.Explicit as SelectList, "-- Chọn danh mục --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IDcate, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+                @Html.ActionLink("Quay lại", "QLMonHoc", null, new { @class = "btn btn-default" })
+            </div>
+        }
+    </div>
+
+    <!-- Bootstrap JS and jQuery scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('chooseImageButton').onclick = function () {
+            document.getElementById('hinhanh').click();
+        };
+
+        document.getElementById('hinhanh').onchange = function (evt) {
+            var tgt = evt.target || window.event.srcElement,
+                files = tgt.files;
+
+            // Hiển thị đường dẫn của tệp đã chọn
+            document.getElementById('imageUrl').value = files[0].name;
+
+            // Hiển thị trước hình ảnh nếu có
+            if (files && files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    document.getElementById('previewImage').setAttribute('src', e.target.result);
+                };
+
+                reader.readAsDataURL(files[0]);
+            }
+        };
+    </script>
+</body>
+</html>
+

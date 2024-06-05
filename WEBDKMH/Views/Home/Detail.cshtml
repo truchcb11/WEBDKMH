@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model WEBDKMH.Models.Subjects
+
+
+<style>
+    .btn-buy {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .btn-buy:hover {
+            background-color: #0056b3;
+        }
+
+    .temp-message {
+        background-color: #f8d7da; /* Màu nền của thông báo */
+        color: #721c24; /* Màu chữ của thông báo */
+        padding: 10px; /* Khoảng cách giữa nội dung và khung của thông báo */
+        border-radius: 5px; /* Độ cong của góc khung của thông báo */
+        margin-top: 10px; /* Khoảng cách từ trên xuống */
+    }
+
+    .lesson-image {
+        width: 300px; /* Đặt chiều rộng ảnh là 100% của container cha */
+        height: 200px; /* Chiều cao tự động tính toán để giữ tỷ lệ khung hình */
+        margin-bottom: 100px; /* Khoảng cách dưới ảnh */
+    }
+</style>
+
+<div class="lesson-detail">
+    @Html.ValidationSummary(true, null, new { @class = "alert alert-danger" })
+    <h2>@Model.SubjectTitle</h2>
+    <img src="@Model.Images" alt="@Model.SubjectTitle" class="lesson-image" />
+    <p>@Model.Describe</p>
+    <p>Phải học qua: @Model.Dktienquyet</p>
+    <p>@Model.Price</p>
+
+    @if (ViewBag.CourseList != null)
+    {
+        <form id="buyForm" action="@Url.Action("Buy", "Home", new { id = Model.Id })" method="post">
+            <label for="course">Chọn khóa học:</label>
+            <select name="course" id="course">
+                @foreach (var course in ViewBag.CourseList)
+                {
+                    <option value="@course.ID">@course.Coursename - (@course.Starttime - @course.Endtime)</option>
+                }
+            </select>
+            <br />
+
+            <input type="hidden" name="courseId" id="courseId" value="" />
+
+            <input type="submit" value="Mua" class="btn-buy" />
+        </form>
+    }
+    else
+    {
+        <p>Không có khóa học nào.</p>
+    }
+    @if (TempData["Message"] != null)
+    {
+        <div class="temp-message">
+            @TempData["Message"]
+        </div>
+    }
+</div>
+
+<script>
+    document.getElementById("buyForm").addEventListener("submit", function () {
+        var selectedCourseId = document.getElementById("course").value;
+        document.getElementById("courseId").value = selectedCourseId;
+    });
+</script>
+
+
+
+
+
+

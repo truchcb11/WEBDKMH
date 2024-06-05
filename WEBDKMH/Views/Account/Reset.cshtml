@@ -1,0 +1,95 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <style>
+        /* CSS */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .forgot-password-form {
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .forgot-password-form h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .forgot-password-form label,
+        .forgot-password-form input {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+            .forgot-password-form input[type="submit"] {
+                width: 100%;
+                padding: 10px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .forgot-password-form input[type="submit"]:hover {
+                    background-color: #0056b3;
+                }
+
+        .forgot-password-form .back-to-login {
+            text-align: center;
+        }
+
+        .back-to-login a:hover {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    @using (Html.BeginForm("Reset", "Account"))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="forgot-password-form">
+            <h2>Forgot Password</h2>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <input type="submit" value="Reset Password">
+
+            <div class="back-to-login">
+                <a href="Login">Back to Login</a>
+            </div>
+        </div>
+    }
+</body>
+</html>
+

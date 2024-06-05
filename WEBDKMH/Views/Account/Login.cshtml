@@ -1,0 +1,141 @@
+﻿@{
+    Layout = null;
+}
+@model WEBDKMH.Models.LoginViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+            .container h1 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+        .form-control {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+            .password-container .toggle-password {
+                position: absolute;
+                top: 50%;
+                right: 5px;
+                transform: translateY(-50%);
+                cursor: pointer;
+            }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .signup-link,
+        .reset-link {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+            .signup-link a,
+            .reset-link a {
+                color: #007bff;
+                text-decoration: none;
+            }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .alert-danger {
+            color: #ff0000;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, null, new { @class= "alert alert-danger" })
+
+            <label for="email">Email:</label>
+            @Html.TextBoxFor(model => model.email, new { @class="form-control", @placeholder="emali", @autofocut="autofocus" })
+
+            <label for="password">Password:</label>
+            <div class="password-container">
+                @Html.PasswordFor(model => model.password, new { @class = "form-control", @placeholder = "password", @autofocut = "autofocus" })
+                <span class="toggle-password"><i class="far fa-eye"></i></span>
+            </div>
+
+            <button type="submit" class="btn btn-lg btn-success" >Login</button>
+        }
+
+        <div class="signup-link">
+            <p>Need an account? <a href="@Url.Action("Register", "Account")">Sign up</a></p>
+        </div>
+
+        <div class="reset_link">
+            <a href="@Url.Action("Reset", "Account")">Forgot password?</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const togglePassword = document.querySelector('.toggle-password');
+            const passwordInput = document.querySelector('#password');
+
+            togglePassword.addEventListener('click', function () {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+                passwordInput.focus();
+            });
+        });
+    </script>
+
+</body>
+</html>

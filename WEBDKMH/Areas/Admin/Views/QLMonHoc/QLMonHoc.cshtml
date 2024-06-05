@@ -1,0 +1,248 @@
+﻿
+@{
+    ViewBag.Title = "QLMonHoc";
+    Layout = "~/Areas/Admin/Views/Shared/Index.cshtml";
+}
+@model PagedList.IPagedList<WEBDKMH.Models.Subjects>
+@using PagedList.Mvc;
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Danh sách giảng viên</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+
+        .nut {
+            display: block;
+            width: 190px; /* Độ rộng của nút */
+        }
+
+        /* CSS cho nút Xóa */
+        input[type="submit"].xoa {
+            background-color: #f44336; /* Màu đỏ */
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu */
+        }
+
+            input[type="submit"].xoa:hover {
+                background-color: #d32f2f; /* Màu đỏ tối */
+            }
+
+        /* CSS cho nút Tìm kiếm */
+        input[type="submit"].timkiem {
+            background-color: #4CAF50; /* Màu xanh lá cây */
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu */
+        }
+
+            input[type="submit"].timkiem:hover {
+                background-color: #45a049; /* Màu xanh lá cây tối */
+            }
+
+        /* CSS cho form tìm kiếm */
+        form.search-form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+            form.search-form label {
+                font-weight: bold;
+            }
+
+            form.search-form input[type="text"] {
+                padding: 8px;
+                margin: 0 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            form.search-form input[type="submit"] {
+                background-color: #4CAF50; /* Màu xanh lá cây */
+                color: white;
+                padding: 8px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu */
+            }
+
+                form.search-form input[type="submit"]:hover {
+                    background-color: #45a049; /* Màu xanh lá cây tối */
+                }
+
+        .sua {
+            background-color: #28a745; /* Màu xanh lá cây */
+            color: white;
+            padding: 8px 20px;
+            text-decoration: none; /* Loại bỏ gạch chân */
+            border-radius: 4px;
+            transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu */
+        }
+
+            .sua:hover {
+                background-color: #218838; /* Màu xanh lá cây tối */
+            }
+
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+            .pagination li {
+                margin-right: 5px;
+            }
+
+                .pagination li a {
+                    display: block;
+                    padding: 5px 10px;
+                    background-color: #f2f2f2;
+                    color: #333;
+                    text-decoration: none;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                }
+
+                .pagination li.active a {
+                    background-color: #4CAF50; /* Màu xanh lá cây */
+                    color: white;
+                }
+
+                .pagination li a:hover {
+                    background-color: #ddd;
+                }
+    </style>
+</head>
+<body>
+    <h1>Danh sách Subject</h1>
+    <form action="@Url.Action("Search", "QLMonhoc")" method="get" class="search-form">
+        <label for="search">Tìm kiếm:</label>
+        <input type="text" id="search" name="search" class="formcontrol">
+        <input type="submit" value="Tìm kiếm" class="timkiem">
+    </form>
+
+    @Html.ActionLink("Thêm môn học mới", "AddMonHoc", null, new { @class = "nut" })
+
+
+    @if (ViewBag.IsSearchResult != null && ViewBag.IsSearchResult)
+    {
+        if (Model != null && Model.Any())
+        {
+            <table border="1">
+                <tr>
+                    <th>ID</th>
+                    <th>Mã Môn học</th>
+                    <th>Tên môn học</th>
+                    <th>Mô tả</th>
+                    <th>Điều kiện tiên quyết</th>
+                    <th>Id danh mục</th>
+                    <th>Hình ảnh</th>
+                    <th>Giá</th>
+                </tr>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.MaSubhect</td>
+                        <td>@user.SubjectTitle</td>
+                        <td>@user.Describe</td>
+                        <td>@user.Dktienquyet</td>
+                        <td>@user.Idcate</td>
+                        <td>@user.Images</td>
+                        <td>@user.Price</td>
+                        <td>
+                            <div style="display: flex; flex-direction: row;">
+                                @using (Html.BeginForm("Delete", "QLMonHoc"))
+                                {
+                                    @Html.Hidden("Id", user.Id)
+                                    <input type="submit" value="Xóa" class="xoa" onclick="return confirm('Bạn có chắc muốn xóa môn học này?');" style="margin-right: 10px;" />
+                                }
+                                @Html.ActionLink("Sửa", "SuaGMonHoc", new { id = user.Id }, new { @class = "sua" })
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            </table>
+            @Html.PagedListPager(Model, page => Url.Action("QLMonHoc", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+
+        }
+        else
+        {
+            <p> Không tìm thấy kết quả phù hợp.</p>
+        }
+    }
+    else
+    {
+        if (Model != null && Model.Any())
+        {
+            <table border="1">
+                <tr>
+                    <th>ID</th>
+                    <th>Mã Môn học</th>
+                    <th>Tên môn học</th>
+                    <th>Mô tả</th>
+                    <th>Điều kiện tiên quyết</th>
+                    <th>Id danh mục</th>
+                    <th>Hình ảnh</th>
+                    <th>Giá</th>
+                </tr>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.MaSubhect</td>
+                        <td>@user.SubjectTitle</td>
+                        <td>@user.Describe</td>
+                        <td>@user.Dktienquyet</td>
+                        <td>@user.Idcate</td>
+                        <td>@user.Images</td>
+                        <td>@user.Price</td>
+                        <td>
+                            <div style="display: flex; flex-direction: row;">
+                                @using (Html.BeginForm("Delete", "QLMonHoc"))
+                                {
+                                    @Html.Hidden("Id", user.Id)
+                                    <input type="submit" value="Xóa" class="xoa" onclick="return confirm('Bạn có chắc muốn xóa môn học này?');" style="margin-right: 10px;" />
+                                }
+                                @Html.ActionLink("Sửa", "SuaMonHoc", new { id = user.Id }, new { @class = "sua" })
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            </table>
+            @Html.PagedListPager(Model, page => Url.Action("QLMonHoc", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+
+        }
+    }
+</body>
+</html>
+

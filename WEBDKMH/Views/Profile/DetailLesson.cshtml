@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "DetailLesson";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model WEBDKMH.Models.Lesson
+<h2>DetailLesson</h2>
+
+<style>
+    
+
+    .temp-message {
+        background-color: #f8d7da; /* Màu nền của thông báo */
+        color: #721c24; /* Màu chữ của thông báo */
+        padding: 10px; /* Khoảng cách giữa nội dung và khung của thông báo */
+        border-radius: 5px; /* Độ cong của góc khung của thông báo */
+        margin-top: 10px; /* Khoảng cách từ trên xuống */
+    }
+
+    .lesson-image {
+        width:700px; /* Đặt chiều rộng ảnh là 100% của container cha */
+        height: 500px; /* Chiều cao tự động tính toán để giữ tỷ lệ khung hình */
+        margin-bottom: 100px; /* Khoảng cách dưới ảnh */
+    }
+</style>
+
+<div class="lesson-detail">
+    @Html.ValidationSummary(true, null, new { @class = "alert alert-danger" })
+    <h2>@Model.TieuDe</h2>
+    <video controls class="lesson-image">
+        <source src="@Model.Video" >       
+    </video>
+    <p>@Model.Describe</p>
+    
+

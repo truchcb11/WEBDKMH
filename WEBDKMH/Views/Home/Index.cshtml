@@ -1,0 +1,222 @@
+﻿@model List<WEBDKMH.Models.Subjects>
+@{
+    ViewBag.Title = "Home";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slideshow</title>
+    <style>
+        .slideshow-container {
+            max-width: 1000px;
+            position: relative;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .mySlides {
+            display: none;
+            animation-name: fade;
+            animation-duration: 2s;
+            animation-timing-function: ease-in-out;
+        }
+
+        @@keyframes fade {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            margin-top: -22px;
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+
+        /* Style cho nút next */
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        /* Style cho chấm tròn thể hiện số trang của slideshow */
+        .dot {
+            cursor: pointer;
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        .active {
+            background-color: #717171;
+        }
+
+        .mySlides {
+            display: block;
+            margin: 0 auto;
+            width: 600px;
+            height: 500px;
+        }
+
+        .slide-image {
+            display: block;
+            margin: 0 auto;
+            width: 600px;
+            height: 500px;
+        }
+
+        .lessons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between; /* Canh giữa các khóa học và tạo khoảng trống giữa các hàng */
+        }
+
+        .lesson {
+            flex-basis: calc(20% - 20px); /* 20% để mỗi hàng chứa tối đa 5 khóa học, với khoảng cách 20px giữa các khóa học */
+            margin-bottom: 20px; /* Khoảng cách dưới cùng của mỗi khóa học */
+        }
+
+        .lesson-content {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .lesson-image {
+            width: 100%;
+            height: auto;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .lesson-title {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slideshow-container">
+        <!-- Đây là các ảnh trong slideshow -->
+        <div class="mySlides">
+            <img class="slide-image" src="~/Images/e-learning.jpg">
+        </div>
+
+        <div class="mySlides">
+            <img class="slide-image" src="~/Images/elea.png">
+        </div>
+
+        <div class="mySlides">
+            <img class="slide-image" src="~/Images/elearning.jpg">
+        </div>
+
+        <div class="mySlides">
+            <img class="slide-image" src="~/Images/unnamed.jpg">
+        </div>
+
+    </div>
+    <br>
+
+    <!-- Các chấm tròn thể hiện số trang của slideshow -->
+    <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+        <span class="dot" onclick="currentSlide(4)"></span>
+    </div>
+
+    <h2>Danh sách các bài học</h2>
+
+    @if (ViewBag.IsSearchResult != null && ViewBag.IsSearchResult)
+    {
+        if (Model != null && Model.Any())
+        {
+            <div class="lessons-container">
+                @foreach (var lesson in Model)
+                {
+                    <div class="lesson">
+                        <a href="@Url.Action("Detail", "Home", new { id = lesson.Id })">
+                            <div class="lesson-content">
+                                <img src="@lesson.Images" alt="@lesson.SubjectTitle" class="lesson-image" />
+                                <h3 class="lesson-title">@lesson.SubjectTitle</h3>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p> Không tìm thấy kết quả phù hợp.</p>
+        }
+    }
+    else
+    {
+        if (Model != null && Model.Any())
+        {
+            <div class="lessons-container">
+                @foreach (var lesson in Model)
+                {
+                    <div class="lesson">
+                        <a href="@Url.Action("Detail", "Home", new { id = lesson.Id })">
+                            <div class="lesson-content">
+                                <img src="@lesson.Images" alt="@lesson.SubjectTitle" class="lesson-image" />
+                                <h3 class="lesson-title">@lesson.SubjectTitle</h3>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        }
+    }
+
+    <script>
+        var slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1 }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+            setTimeout(showSlides, 5000); // Thay đổi 2000 nếu bạn muốn thời gian chuyển ảnh khác
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+    </script>
+
+</body>
+</html>
+

@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "AddMonHoc";
+    Layout = "~/Areas/Admin/Views/Shared/Index.cshtml";
+}
+@model WEBDKMH.Areas.Admin.Model.SubViewModel
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ThemGiangVien</title>
+    <style>
+        .form-container {
+            width: 50%; /* Độ rộng của form */
+            margin: auto; /* Căn giữa form */
+            padding: 50px 10px 50px 140px; /* Khoảng cách giữa lề và nội dung trong form */
+            border: 1px solid #ccc; /* Đường viền của form */
+            border-radius: 10px; /* Bo tròn viền của form */
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Thêm Môn Học Mới</h2>
+
+        @using (Html.BeginForm("AddMonHoc", "QLMonHoc", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Masubhect)
+                @Html.TextBoxFor(model => model.Masubhect, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Masubhect)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SubjectTitle)
+                @Html.TextBoxFor(model => model.SubjectTitle, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SubjectTitle)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Describe)
+                @Html.TextBoxFor(model => model.Describe, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Describe)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DKtienquyet)
+                @Html.TextBoxFor(model => model.DKtienquyet, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DKtienquyet)
+            </div>
+
+            <div class="form-group">
+                <label for="DanhMuc">Danh Mục</label>
+                @Html.DropDownList("IdDanhMuc", ViewBag.DanhMucList as SelectList, "Chọn danh mục...", new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Images)
+                <input type="text" id="imageUrl" class="form-control" readonly>
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button" id="chooseImageButton">Chọn ảnh</button>
+                </span>
+            </div>
+            <input type="file" id="hinhanh" name="hinhanh" style="display: none;" accept="image/*" />
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Price)
+                @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Price)
+            </div>
+
+            <button type="submit" class="btn btn-primary">Thêm Môn Học</button>
+        }
+    </div>
+    <script>
+        document.getElementById('chooseImageButton').onclick = function () {
+            document.getElementById('hinhanh').click();
+        };
+
+        document.getElementById('hinhanh').onchange = function (evt) {
+            var tgt = evt.target || window.event.srcElement,
+                files = tgt.files;
+
+            // Hiển thị đường dẫn của tệp đã chọn
+            document.getElementById('imageUrl').value = files[0].name;
+
+            // Hiển thị trước hình ảnh nếu có
+            if (files && files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    document.getElementById('previewImage').setAttribute('src', e.target.result);
+                };
+
+                reader.readAsDataURL(files[0]);
+            }
+        };
+    </script>
+</body>
+</html>
+

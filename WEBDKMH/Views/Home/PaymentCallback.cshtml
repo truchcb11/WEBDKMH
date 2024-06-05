@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "PaymentCallback";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .payment-callback {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+</style>
+<h2>PaymentCallback</h2>
+
+@if (ViewBag.PaymentStatus == "success")
+{
+    <div class="alert alert-success" role="alert">
+        Thanh toán thành công!
+    </div>
+}
+else if (ViewBag.PaymentStatus == "failure")
+{
+    <div class="alert alert-danger" role="alert">
+        Thanh toán thất bại!
+    </div>
+}

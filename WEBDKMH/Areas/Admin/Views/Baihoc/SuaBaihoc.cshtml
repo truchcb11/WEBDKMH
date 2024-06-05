@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "SuaBaihoc";
+    Layout = "~/Areas/Admin/Views/Shared/Index.cshtml";
+}
+
+@model WEBDKMH.Areas.Admin.Model.LesViewModel
+
+<h2>@ViewBag.Title</h2>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sửa Môn Học</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-4">Sửa Bài học</h2>
+
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.ErrorMessage
+            </div>
+        }
+
+        @using (Html.BeginForm("SuaBaihoc", "Baihoc", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Tieude, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Tieude, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Tieude, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Describe, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Describe, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Describe, "", new { @class = "text-danger" })
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Idsub, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.Idsub, ViewBag.Explicit as SelectList, "-- Chọn Môn học --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Idsub, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Video, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <input type="text" id="videoUrl" class="form-control" value="@Model.Video" readonly>
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button" id="chooseVideoButton">Chọn video</button>
+                    </span>
+                </div>
+                <input type="file" id="video" name="video" style="display: none;" accept="video/*" />
+                @if (!string.IsNullOrEmpty(Model.Video))
+                {
+                <video src="@Model.Video" controls class="mt-2" style="max-width: 100%;" />                }
+                </div>
+
+                            <div class="form-group">
+                                <input type="submit" value="Lưu" class="btn btn-primary" />
+                                @Html.ActionLink("Quay lại", "Baihoc", null, new { @class = "btn btn-default" })
+                            </div>}
+             </div>
+
+    <!-- Bootstrap JS and jQuery scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('chooseVideoButton').onclick = function () {
+            document.getElementById('video').click();
+        };
+
+        document.getElementById('video').onchange = function (evt) {
+            var tgt = evt.target || window.event.srcElement,
+                files = tgt.files;
+
+            // Hiển thị đường dẫn của tệp đã chọn
+            document.getElementById('videoUrl').value = files[0].name;
+
+            // Hiển thị trước video nếu có
+            if (files && files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var videoElement = document.createElement('video');
+                    videoElement.setAttribute('src', e.target.result);
+                    videoElement.setAttribute('controls', 'controls');
+                    videoElement.setAttribute('style', 'max-width: 100%; margin-top: 10px;');
+                    var previewContainer = document.getElementById('previewVideoContainer');
+                    previewContainer.innerHTML = '';
+                    previewContainer.appendChild(videoElement);
+                };
+
+                reader.readAsDataURL(files[0]);
+            }
+        };
+    </script>
+</body>
+</html>
+

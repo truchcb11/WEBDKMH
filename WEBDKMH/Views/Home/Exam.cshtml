@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Exam";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<WEBDKMH.Models.Question>
+
+<div class="container">
+    <h2 class="my-4 text-center">Exam</h2>
+
+    @using (Html.BeginForm("Result", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        for (int i = 0; i < Model.Count; i++)
+        {
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>@Model[i].Question1</h4>                   
+                </div>
+                <div class="card-body">
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="answerA_@i" name="selectedAnswers[@i]" value="@Model[i].AnswerA" />
+                        <label class="form-check-label" for="answerA_@i">@Model[i].AnswerA</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="answerB_@i" name="selectedAnswers[@i]" value="@Model[i].AnswerB" />
+                        <label class="form-check-label" for="answerB_@i">@Model[i].AnswerB</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="answerC_@i" name="selectedAnswers[@i]" value="@Model[i].AnswerC" />
+                        <label class="form-check-label" for="answerC_@i">@Model[i].AnswerC</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="answerD_@i" name="selectedAnswers[@i]" value="@Model[i].AnswerD" />
+                        <label class="form-check-label" for="answerD_@i">@Model[i].AnswerD</label>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    }
+</div>

@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "History";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<WEBDKMH.Models.Subjects>
+
+<style>
+    body {
+        padding-top: 100px;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    /* Căn giữa trang */
+    .lessons-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    /* Phần của từng bài học */
+    .lesson {
+        width: 200px; /* Điều chỉnh kích thước bài học tại đây */
+        margin: 10px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Ảnh của từng bài học */
+    .lesson-image {
+        width: 100%; /* Đảm bảo ảnh đầy đủ kích thước */
+        border-radius: 5px;
+    }
+
+    /* Tiêu đề của từng bài học */
+    .lesson-title {
+        margin-top: 10px;
+        font-size: 16px;
+        text-align: center;
+    }
+
+</style>
+
+<body>
+    <h2>History</h2>
+    <div class="lessons-container">
+        @foreach (var lesson in Model)
+        {
+            <div class="lesson">
+
+                <div class="lesson-content">
+                    <img src="@lesson.Images" alt="@lesson.SubjectTitle" class="lesson-image" />
+                    <h3 class="lesson-title">@lesson.SubjectTitle</h3>
+                </div>
+
+            </div>
+        }
+    </div>
+</body>

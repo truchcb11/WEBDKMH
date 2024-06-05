@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="icon" href="~/Images/studying.png" type="image/x-icon" />
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .navbar {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 10px;
+            width: 200px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: block;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .nav-item {
+            text-align: center;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 20px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+            .nav-link:hover {
+                background-color: #495057;
+            }
+
+        .container {
+            margin-left: 200px;
+            padding: 20px;
+        }
+
+        .card {
+            width: 250px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 10px;
+            border-bottom: 1px solid #ced4da;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+       
+
+        .btn {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+            .btn:hover {
+                background-color: #0056b3;
+            }
+
+        .nav {
+            justify-content: center; 
+        }
+        
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" href="@Url.Action("QLUser", "HomeAD")">Admin Panel</a>
+        <hr />
+        <ul class="nav">
+
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("QLUser", "HomeAD")">User</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("QLGiangVien", "QLGiangVien")">Giảng viên</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("BaiHoc", "BaiHoc")">Bài Học</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Khóa học</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("QLMonHoc", "QLMonHoc")">Môn Học</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">History</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="../../Account/login">Log out</a>
+            </li>
+        </ul>
+    </nav>
+        
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,47 @@
+﻿@model WEBDKMH.Models.EditProfile
+
+@{
+    ViewBag.Title = "EditProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    bool formSubmitted = false;
+}
+
+<h2>Edit Profile</h2>
+
+@using (Html.BeginForm("EditProfile", "Profile", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, null, new { @class = "alert alert-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email)
+        @Html.DisplayFor(model => model.Email, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Fullname)
+        @Html.TextBoxFor(model => model.Fullname, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Fullname)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Address)
+        @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Address)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Phone)
+        @Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Phone)
+    </div>
+
+    <button type="submit" class="btn btn-primary" onclick="formSubmitted = true;">Save</button>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+

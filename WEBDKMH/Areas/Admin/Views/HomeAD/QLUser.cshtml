@@ -1,0 +1,246 @@
+﻿@{
+    ViewBag.Title = "QLUser";
+    Layout = "~/Areas/Admin/Views/Shared/Index.cshtml";
+}
+
+@model PagedList.IPagedList<WEBDKMH.Models.Users>
+@using PagedList.Mvc;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Danh sách người dùng</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .blur-background {
+            filter: blur(4px);
+            pointer-events: none;
+        }
+
+        /* CSS cho nút Xóa */
+        input[type="submit"].xoa {
+            background-color: #f44336; /* Màu đỏ */
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu */
+        }
+
+            input[type="submit"].xoa:hover {
+                background-color: #d32f2f; /* Màu đỏ tối */
+            }
+
+        /* CSS cho nút Tìm kiếm */
+        input[type="submit"].timkiem {
+            background-color: #4CAF50; /* Màu xanh lá cây */
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu */
+        }
+
+            input[type="submit"].timkiem:hover {
+                background-color: #45a049; /* Màu xanh lá cây tối */
+            }
+
+        /* CSS cho form tìm kiếm */
+        form.search-form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+            form.search-form label {
+                font-weight: bold;
+            }
+
+            form.search-form input[type="text"] {
+                padding: 8px;
+                margin: 0 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            form.search-form input[type="submit"] {
+                background-color: #4CAF50; /* Màu xanh lá cây */
+                color: white;
+                padding: 8px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu */
+            }
+
+                form.search-form input[type="submit"]:hover {
+                    background-color: #45a049; /* Màu xanh lá cây tối */
+                }
+
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+            .pagination li {
+                margin-right: 5px;
+            }
+
+                .pagination li a {
+                    display: block;
+                    padding: 5px 10px;
+                    background-color: #f2f2f2;
+                    color: #333;
+                    text-decoration: none;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                }
+
+                .pagination li.active a {
+                    background-color: #4CAF50; /* Màu xanh lá cây */
+                    color: white;
+                }
+
+                .pagination li a:hover {
+                    background-color: #ddd;
+                }
+
+    </style>
+</head>
+<body>
+    <h1>Danh sách User</h1>
+    <form action="@Url.Action("Search", "HomeAD")" method="get" class="search-form">
+        <label for="search">Tìm kiếm:</label>
+        <input type="text" id="search" name="search" class="formcontrol">
+        <input type="submit" value="Tìm kiếm" class="timkiem">
+    </form>
+
+    @if (ViewBag.IsSearchResult != null && ViewBag.IsSearchResult)
+    {
+        if (Model != null && Model.Any())
+        {
+            <table border="1">
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Họ và tên</th>
+                    <th>Địa chỉ</th>
+                    <th>Điện thoại</th>
+                    <th>ID Roll</th>
+                    <th>Verify</th>
+                    <th>Action</th>
+                </tr>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.Email</td>
+                        <td>@user.Password</td>
+                        <td>@user.Fullname</td>
+                        <td>@user.Address</td>
+                        <td>@user.Phone</td>
+                        <td>@user.Idroll</td>
+                        <td>@user.Verify</td>
+                        <td>
+                            @if (!user.Verify.HasValue || user.Verify.Value == false)
+                            {
+                                using (Html.BeginForm("VerifyUser", "HomeAD", FormMethod.Post))
+                                {
+                                    <input type="hidden" name="userId" value="@user.Id" />
+                                    <input type="submit" value="Verify" />
+                                }
+                            }
+                        </td>
+                        <td>
+                            @using (Html.BeginForm("DeleteUser", "HomeAD"))
+                            {
+                                @Html.Hidden("userId", user.Id)
+                                <input type="submit" value="Xóa" class="xoa" onclick="return confirm('Bạn có chắc muốn xóa người dùng này?');" />
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+            @Html.PagedListPager(Model, page => Url.Action("QLUser", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+        }
+        else
+        {
+            <p>Không tìm thấy kết quả phù hợp.</p>
+        }
+    }
+    else
+    {
+        if (Model != null && Model.Any())
+        {
+            <table border="1">
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Họ và tên</th>
+                    <th>Địa chỉ</th>
+                    <th>Điện thoại</th>
+                    <th>ID Roll</th>
+                    <th>Verify</th>
+                    <th>Action</th>
+                </tr>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.Email</td>
+                        <td>@user.Password</td>
+                        <td>@user.Fullname</td>
+                        <td>@user.Address</td>
+                        <td>@user.Phone</td>
+                        <td>@user.Idroll</td>
+                        <td>@user.Verify</td>
+                        <td>
+                            @if (!user.Verify.HasValue || user.Verify.Value == false)
+                            {
+                                using (Html.BeginForm("VerifyUser", "HomeAD"))
+                                {
+                                    <input type="hidden" name="userId" value="@user.Id" />
+                                    <input type="submit" value="Verify" />
+                                }
+                            }
+                        </td>
+                        <td>
+                            @using (Html.BeginForm("DeleteUser", "HomeAD"))
+                            {
+                                @Html.Hidden("userId", user.Id)
+                                <input type="submit" value="Xóa" class="xoa" onclick="return confirm('Bạn có chắc muốn xóa người dùng này?');" />
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+            <br />
+            @Html.PagedListPager(Model, page => Url.Action("QLUser", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+        }
+    }
+</body>
+</html>
+
+
+

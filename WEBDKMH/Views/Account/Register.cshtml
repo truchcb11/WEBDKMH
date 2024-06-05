@@ -1,0 +1,156 @@
+﻿
+@{
+    Layout = null;
+}
+@model WEBDKMH.Models.RegisterViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .registration-form {
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .registration-form h2 {
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .registration-form label,
+            .registration-form input {
+                display: block;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+                .registration-form input[type="submit"] {
+                    width: 100%;
+                    padding: 10px;
+                    background-color: #007bff;
+                    color: #fff;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+
+                    .registration-form input[type="submit"]:hover {
+                        background-color: #0056b3;
+                    }
+
+        .password-container .toggle-password {
+            position: absolute;
+            top: 34%;
+            right: 41%;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .confirm-password-container .toggle-password {
+            position: absolute;
+            top: 45%;
+            right: 41%;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .reset_link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+            .reset_link a {
+                color: #007bff;
+                text-decoration: none;
+            }
+
+                .reset_link a:hover {
+                    color: #4af076;
+                }
+    </style>
+</head>
+<body>
+    <div class="registration-form">
+        <h2>Registration</h2>
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, null, new { @class = "alert alert-danger" })
+
+            <label for="email">Email:</label>
+            @Html.TextBoxFor(m => m.Email, new { type = "email", required = "required" })
+
+            <label for="password">Password:</label>
+            <div class="password-container">
+                @Html.PasswordFor(m => m.Password, new { required = "required" })
+                <span class="toggle-password" onclick="togglePassword('Password')">Show</span>
+            </div>
+
+            <label for="confirm_password">Confirm Password:</label>
+            <div class="confirm-password-container">
+                @Html.PasswordFor(m => m.ConfirmPassword, new { required = "required" })
+                <span class="toggle-password" onclick="togglePassword('ConfirmPassword')">Show</span>
+            </div>
+
+            <label for="fullname">Full Name:</label>
+            @Html.TextBoxFor(m => m.Fullname, new { required = "required" })
+
+            <label for="address">Address:</label>
+            @Html.TextBoxFor(m => m.Address, new { required = "required" })
+
+            <label for="phone">Phone:</label>
+            @Html.TextBoxFor(m => m.Phone, new { type = "tel", pattern = "[0-9]+", title = "Please enter numbers only", required = "required" })
+
+            <input type="submit" value="Register">
+
+            <div class="reset_link">
+                <a href="@Url.Action("Login", "Account")">Already have an account</a>
+            </div>
+        }
+    </div>
+
+    <script>
+        function togglePassword(inputId) {
+            var input = document.getElementById(inputId);
+            var type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            var toggleSpan = input.nextElementSibling;
+            toggleSpan.textContent = type === 'password' ? 'Show' : 'Hide';
+        }
+    </script>
+</body>
+</html>
+
+
+
+

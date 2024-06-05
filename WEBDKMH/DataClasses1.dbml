@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Elearning" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=MSI;Initial Catalog=Elearning;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="ElearningConnectionString1" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Category" Member="Categories">
+    <Type Name="Category">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Catename" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Images" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Association Name="Category_Subject" Member="Subjects" ThisKey="ID" OtherKey="IDcate" Type="Subject" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Course" Member="Courses">
+    <Type Name="Course">
+      <Column Name="IDlecturers" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IDSubjects" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Coursename" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Starttime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="Endtime" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="Startdate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Enddate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Association Name="Lecturer_Course" Member="Lecturer" ThisKey="IDlecturers" OtherKey="ID" Type="Lecturer" IsForeignKey="true" />
+      <Association Name="Subject_Course" Member="Subject" ThisKey="IDSubjects" OtherKey="ID" Type="Subject" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Exam" Member="Exams">
+    <Type Name="Exam">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="[number of questions]" Member="number_of_questions" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Exam_Result" Member="Results" ThisKey="ID" OtherKey="IDexam" Type="Result" />
+    </Type>
+  </Table>
+  <Table Name="dbo.History" Member="Histories">
+    <Type Name="History">
+      <Column Name="IDUser" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IDSub" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IDCou" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Subject_History" Member="Subject" ThisKey="IDSub" OtherKey="ID" Type="Subject" IsForeignKey="true" />
+      <Association Name="User_History" Member="User" ThisKey="IDUser" OtherKey="ID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Lecturers" Member="Lecturers">
+    <Type Name="Lecturer">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Fullname" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="phone" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Lecturer_Course" Member="Courses" ThisKey="ID" OtherKey="IDlecturers" Type="Course" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Lesson" Member="Lessons">
+    <Type Name="Lesson">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TieuDe" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Video" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Describe" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="IDSub" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Subject_Lesson" Member="Subject" ThisKey="IDSub" OtherKey="ID" Type="Subject" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Question" Member="Questions">
+    <Type Name="Question">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Question" Member="Question1" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="answerA" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="answerB" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="answerC" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="answerD" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="answer" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="IDsub" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Question_Result" Member="Results" ThisKey="ID" OtherKey="IDques" Type="Result" />
+      <Association Name="Subject_Question" Member="Subject" ThisKey="IDsub" OtherKey="ID" Type="Subject" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Result" Member="Results">
+    <Type Name="Result">
+      <Column Name="IDuser" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IDexam" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IDques" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="answer" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Association Name="Exam_Result" Member="Exam" ThisKey="IDexam" OtherKey="ID" Type="Exam" IsForeignKey="true" />
+      <Association Name="Question_Result" Member="Question" ThisKey="IDques" OtherKey="ID" Type="Question" IsForeignKey="true" />
+      <Association Name="User_Result" Member="User" ThisKey="IDuser" OtherKey="ID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Roles" Member="Roles">
+    <Type Name="Role">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Rolename" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Association Name="Role_User" Member="Users" ThisKey="ID" OtherKey="IDRoll" Type="User" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Subjects" Member="Subjects">
+    <Type Name="Subject">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MaSubhect" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectTitle" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Describe" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="DKtienquyet" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IDcate" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Images" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Price" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="Subject_Course" Member="Courses" ThisKey="ID" OtherKey="IDSubjects" Type="Course" />
+      <Association Name="Subject_History" Member="Histories" ThisKey="ID" OtherKey="IDSub" Type="History" />
+      <Association Name="Subject_Lesson" Member="Lessons" ThisKey="ID" OtherKey="IDSub" Type="Lesson" />
+      <Association Name="Subject_Question" Member="Questions" ThisKey="ID" OtherKey="IDsub" Type="Question" />
+      <Association Name="Category_Subject" Member="Category" ThisKey="IDcate" OtherKey="ID" Type="Category" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="password" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Fullname" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IDRoll" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Verify" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="User_History" Member="Histories" ThisKey="ID" OtherKey="IDUser" Type="History" />
+      <Association Name="User_Result" Member="Results" ThisKey="ID" OtherKey="IDuser" Type="Result" />
+      <Association Name="Role_User" Member="Role" ThisKey="IDRoll" OtherKey="ID" Type="Role" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
